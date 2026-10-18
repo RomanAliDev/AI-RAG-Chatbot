@@ -1,6 +1,6 @@
 from pathlib import Path
 from uuid import uuid4
-
+import os
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
@@ -16,7 +16,7 @@ from app.services.ingestion_service import ingest_document
 
 router = APIRouter(prefix="/api/v1/documents", tags=["Documents"])
 
-UPLOAD_DIR = Path("uploads")
+UPLOAD_DIR = Path("/tmp/uploads" if os.getenv("VERCEL") else "uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 ALLOWED_TYPES = {
